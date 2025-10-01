@@ -36,7 +36,7 @@
         }
         .hidden-cards {
             display: none;
-            grid-template-columns: repeat(auto-fit, minmin(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-top: 1rem;
         }
@@ -46,6 +46,11 @@
         .child-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* 子カードコンテナのグリッド設定を修正 */
+        #remix-child-container {
+            /* md:grid-cols-3に合わせて、子カードも3列を基本とする */
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         }
     </style>
 </head>
@@ -172,30 +177,15 @@
                 </div>
             </div>
             
-            <!-- アルゴロジックI Card -->
-            <a href="http://algolog.jp/algolog1/" target="_blank" class="card block">
-                <div class="bg-yellow-100 rounded-lg shadow-md h-full flex flex-col justify-between">
-                    <img src="https://placehold.co/400x200/F2BE2C/FFFFFF?text=AlgoLogic+I" alt="アルゴロジックI" class="card-image rounded-t-lg">
+            <!-- アルゴロジック (I・II) Card - 統合 -->
+            <a href="https://algo.jeita.or.jp/#:~:text=%E8%AA%AD%E3%81%BF%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82-,START,-%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AD%E3%82%B8%E3%83%83%E3%82%AF%EF%BC%91%E3%81%AE" target="_blank" class="card block">
+                <div class="bg-yellow-200 rounded-lg shadow-md h-full flex flex-col justify-between">
+                    <img src="https://placehold.co/400x200/F2BE2C/FFFFFF?text=AlgoLogic" alt="アルゴロジックI・II" class="card-image rounded-t-lg">
                     <div class="p-6 flex-grow flex flex-col justify-between">
                         <div>
-                            <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">アルゴロジックI</h2>
+                            <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">アルゴロジック (I・II)</h2>
                             <p class="text-gray-600 text-sm text-center">
-                                論理的思考力を鍛えるパズルゲーム。指示を正確に伝えて、ロボットをゴールまで導こう。
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <!-- アルゴロジックII Card -->
-            <a href="http://algolog.jp/algolog2/" target="_blank" class="card block">
-                <div class="bg-lime-100 rounded-lg shadow-md h-full flex flex-col justify-between">
-                    <img src="https://placehold.co/400x200/80B042/FFFFFF?text=AlgoLogic+II" alt="アルゴロジックII" class="card-image rounded-t-lg">
-                    <div class="p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">アルゴロジックII</h2>
-                            <p class="text-gray-600 text-sm text-center">
-                                アルゴロジックIの発展版！さらに難しいミッションに挑戦して、プログラミング脳を鍛えよう。
+                                論理的思考力を鍛えるパズルゲーム。ロボットに指示を正確に伝えて、ミッションをクリアしよう！
                             </p>
                         </div>
                     </div>
@@ -203,7 +193,7 @@
             </a>
 
             <!-- ビスケット Card -->
-            <a href="https://www.viscuit.com/minna/" target="_blank" class="card block">
+            <a href="https://online.viscuit.com/v1/all/?server=s&v2=true" target="_blank" class="card block">
                 <div class="bg-cyan-100 rounded-lg shadow-md h-full flex flex-col justify-between">
                     <img src="https://placehold.co/400x200/40C0C0/FFFFFF?text=Viscuit" alt="ビスケット" class="card-image rounded-t-lg">
                     <div class="p-6 flex-grow flex flex-col justify-between">
@@ -227,14 +217,25 @@
         function toggleRemixCards() {
             const container = document.getElementById('remix-child-container');
             const parentCard = document.getElementById('remix-parent-card');
+            
+            // トグル処理
             if (container.style.display === 'grid') {
                 container.style.display = 'none';
-                parentCard.style.height = 'auto'; // Reset height
+                // 展開時のクラスを削除（col-span-1は不要なため、ここでは削除）
+                parentCard.classList.remove('h-auto', 'md:col-span-3'); 
             } else {
                 container.style.display = 'grid';
-                parentCard.style.height = 'auto'; // Re-calculate height to fit children
+                // 展開時に幅を広げる
+                parentCard.classList.add('h-auto', 'md:col-span-3'); 
             }
         }
+
+        // 初期ロード時にScratch Remix Parent Cardが他のカードと同じ幅になるように調整
+        document.addEventListener('DOMContentLoaded', () => {
+            const parentCard = document.getElementById('remix-parent-card');
+            // 初期状態では子カードは非表示のため、通常のカードと同じスタイルを維持
+            // 既存のグリッド設定で自動的に1列分になる
+        });
     </script>
 </body>
 </html>
