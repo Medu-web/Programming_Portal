@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>プログラミングポータル</title>
+    <!-- 修正済み: Tailwind CSSの読み込みURL -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -20,14 +21,14 @@
         }
         .coming-soon {
             cursor: not-allowed;
-            filter: grayscale(80%);
-            opacity: 0.7;
+            filter: grayscale(0%); /* グレースケールを解除 */
+            opacity: 1; /* 不透明度を戻す */
         }
+        /* リンク要素に変更したため、hover時の動作を無効化 */
         .coming-soon:hover {
             transform: none;
             box-shadow: none;
         }
-        /* アイコン画像スペースのスタイルを修正 */
         .card-image {
             width: 100%;
             height: 150px;
@@ -35,6 +36,7 @@
             border-radius: 8px 8px 0 0;
         }
         .hidden-cards {
+            /* 展開/格納を切り替えるコンテナ */
             display: none;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
@@ -47,15 +49,14 @@
             transform: translateY(-3px);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         }
-        /* 子カードコンテナのグリッド設定を修正 */
-        #remix-child-container {
-            /* md:grid-cols-3に合わせて、子カードも3列を基本とする */
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        /* 展開時の親カードがグリッド全体を占有するスタイル */
+        .expanded-card {
+            grid-column: span 3 / span 3;
         }
     </style>
 </head>
 <body class="p-6">
-    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8 md:p-12">
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8 md:p-12 relative">
         <header class="text-center mb-10">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-2">プログラミングポータル</h1>
             <p class="text-lg md:text-xl text-gray-600">
@@ -63,26 +64,13 @@
             </p>
         </header>
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            <!-- Springin' Classroom Card -->
-            <a href="https://springinclass.org/usagepolicyrules" target="_blank" class="card block">
-                <div class="bg-blue-100 rounded-lg shadow-md h-full flex flex-col justify-between">
-                    <img src="https://placehold.co/400x200/5C8374/FFFFFF?text=Springin'" alt="Springin' Classroom" class="card-image rounded-t-lg">
-                    <div class="p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">Springin’ Classroom</h2>
-                            <p class="text-gray-600 text-sm text-center">
-                                指一本でサクサクつくれる！直感的な操作で、ゲームや絵本を自由に作って遊ぼう。
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </a>
+        <!-- すべての主要カードに md:col-span-1 を明示し、レイアウトを安定化 -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6" id="main-grid">
 
             <!-- プログラミングゼミ Card -->
-            <a href="https://prozemi-prd.cdn-dena.com/webapps/1.14.1/0/20250907-ac3638f36.ja.html" target="_blank" class="card block">
+            <a href="https://prozemi-prd.cdn-dena.com/webapps/1.14.1/0/20250907-ac3638f36.ja.html" target="_blank" class="card block md:col-span-1">
                 <div class="bg-green-100 rounded-lg shadow-md h-full flex flex-col justify-between">
+                    <!-- 画像のURLをGitHubの場所に置き換えてください -->
                     <img src="https://placehold.co/400x200/60C741/FFFFFF?text=Programming+Zemi" alt="プログラミングゼミ" class="card-image rounded-t-lg">
                     <div class="p-6 flex-grow flex flex-col justify-between">
                         <div>
@@ -95,24 +83,26 @@
                 </div>
             </a>
 
-            <!-- VEXcode VR Card -->
-            <div class="card block coming-soon">
-                <div class="bg-gray-200 rounded-lg shadow-md h-full flex flex-col justify-between">
-                    <img src="https://placehold.co/400x200/AAAAAA/FFFFFF?text=Coming+Soon" alt="VEXcode VR" class="card-image rounded-t-lg">
+            <!-- VEXcode VR Card (工事中) - テキストと画像を変更 -->
+            <a href="#" onclick="return false;" class="card block coming-soon md:col-span-1">
+                <div class="bg-yellow-200 rounded-lg shadow-md h-full flex flex-col justify-between">
+                    <!-- 工事中のイメージ (黄色背景、黒字) -->
+                    <img src="https://placehold.co/400x200/FACC15/1F2937?text=%E5%B7%A5%E4%BA%8B%E4%B8%AD" alt="工事中" class="card-image rounded-t-lg">
                     <div class="p-6 flex-grow flex flex-col justify-between">
                         <div>
-                            <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">VEXcode VR</h2>
+                            <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">VEXcode VR (工事中)</h2>
                             <p class="text-gray-600 text-sm text-center">
-                                ただいま準備中です。もうしばらくお待ちください。
+                                準備中です。まもなく仮想ロボットでのプログラミングが始まります！
                             </p>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Scratch Card -->
-            <a href="https://scratch.mit.edu/" target="_blank" class="card block">
+            <a href="https://scratch.mit.edu/" target="_blank" class="card block md:col-span-1">
                 <div class="bg-orange-100 rounded-lg shadow-md h-full flex flex-col justify-between">
+                    <!-- 画像のURLをGitHubの場所に置き換えてください -->
                     <img src="https://placehold.co/400x200/F18B42/FFFFFF?text=Scratch" alt="Scratch" class="card-image rounded-t-lg">
                     <div class="p-6 flex-grow flex flex-col justify-between">
                         <div>
@@ -124,68 +114,18 @@
                     </div>
                 </div>
             </a>
-
-            <!-- Scratch Remix Parent Card -->
-            <div id="remix-parent-card" class="bg-red-100 rounded-lg shadow-md p-6 h-full cursor-pointer" onclick="toggleRemixCards()">
-                <h2 class="text-xl font-semibold text-gray-800 text-center mb-4">「Scratch」でアニメをさわってうごかそう！</h2>
-                <div id="remix-child-container" class="hidden-cards">
-                    <!-- 子カード: The Story of a Sunflower -->
-                    <a href="https://scratch.mit.edu/" target="_blank" class="child-card block">
-                        <div class="bg-white rounded-lg shadow-md p-4">
-                            <h3 class="text-lg font-medium text-gray-800 text-center mb-2">ひまわりの物語</h3>
-                            <p class="text-gray-600 text-xs text-center">
-                                咲いて、枯れて、そしてまた咲く。ひまわりの一生をアニメーションにしてみよう。（Scratchトップページへ）
-                            </p>
-                        </div>
-                    </a>
-                    <!-- 子カード: Animate a name -->
-                    <a href="https://scratch.mit.edu/" target="_blank" class="child-card block">
-                        <div class="bg-white rounded-lg shadow-md p-4">
-                            <h3 class="text-lg font-medium text-gray-800 text-center mb-2">名前をアニメーションに</h3>
-                            <p class="text-gray-600 text-xs text-center">
-                                自分の名前や好きな言葉を、動く文字にしてみよう！（Scratchトップページへ）
-                            </p>
-                        </div>
-                    </a>
-                    <!-- 子カード: A story of a cloud -->
-                    <a href="https://scratch.mit.edu/" target="_blank" class="child-card block">
-                        <div class="bg-white rounded-lg shadow-md p-4">
-                            <h3 class="text-lg font-medium text-gray-800 text-center mb-2">雲の物語</h3>
-                            <p class="text-gray-600 text-xs text-center">
-                                雲の上でお話が繰り広げられる。（Scratchトップページへ）
-                            </p>
-                        </div>
-                    </a>
-                    <!-- 子カード: The journey of a whale -->
-                    <a href="https://scratch.mit.edu/" target="_blank" class="child-card block">
-                        <div class="bg-white rounded-lg shadow-md p-4">
-                            <h3 class="text-lg font-medium text-gray-800 text-center mb-2">クジラの旅</h3>
-                            <p class="text-gray-600 text-xs text-center">
-                                深い海を旅するクジラのアニメーション。（Scratchトップページへ）
-                            </p>
-                        </div>
-                    </a>
-                    <!-- 子カード: Magical potion -->
-                    <a href="https://scratch.mit.edu/" target="_blank" class="child-card block">
-                        <div class="bg-white rounded-lg shadow-md p-4">
-                            <h3 class="text-lg font-medium text-gray-800 text-center mb-2">魔法のポーション</h3>
-                            <p class="text-gray-600 text-xs text-center">
-                                混ぜると色が変わる魔法の薬。（Scratchトップページへ）
-                            </p>
-                        </div>
-                    </a>
-                </div>
-            </div>
             
-            <!-- アルゴロジック (I・II) Card - 統合 -->
-            <a href="https://algo.jeita.or.jp/#:~:text=%E8%AA%AD%E3%81%BF%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82-,START,-%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AD%E3%82%B8%E3%83%83%E3%82%AF%EF%BC%91%E3%81%AE" target="_blank" class="card block">
-                <div class="bg-yellow-200 rounded-lg shadow-md h-full flex flex-col justify-between">
-                    <img src="https://placehold.co/400x200/F2BE2C/FFFFFF?text=AlgoLogic" alt="アルゴロジックI・II" class="card-image rounded-t-lg">
+            <!-- アルゴロジック (I・II) Card -->
+            <!-- リンクはご要望の特殊なURLが設定されています -->
+            <a href="https://algo.jeita.or.jp/#:~:text=%E8%AA%AD%E3%81%BF%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82-,START,-%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AD%E3%82%B8%E3%83%83%E3%82%AF%EF%BC%91%E3%81%AE" target="_blank" class="card block md:col-span-1">
+                <div class="bg-yellow-100 rounded-lg shadow-md h-full flex flex-col justify-between">
+                    <!-- 画像のURLをGitHubの場所に置き換えてください -->
+                    <img src="https://placehold.co/400x200/F2BE2C/FFFFFF?text=AlgoLogic" alt="アルゴロジック" class="card-image rounded-t-lg">
                     <div class="p-6 flex-grow flex flex-col justify-between">
                         <div>
                             <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">アルゴロジック (I・II)</h2>
                             <p class="text-gray-600 text-sm text-center">
-                                論理的思考力を鍛えるパズルゲーム。ロボットに指示を正確に伝えて、ミッションをクリアしよう！
+                                論理的思考力を鍛えるパズルゲーム。指示を正確に伝えて、ロボットをゴールまで導こう。
                             </p>
                         </div>
                     </div>
@@ -193,8 +133,9 @@
             </a>
 
             <!-- ビスケット Card -->
-            <a href="https://online.viscuit.com/v1/all/?server=s&v2=true" target="_blank" class="card block">
+            <a href="https://online.viscuit.com/v1/all/?server=s&v2=true" target="_blank" class="card block md:col-span-1">
                 <div class="bg-cyan-100 rounded-lg shadow-md h-full flex flex-col justify-between">
+                    <!-- 画像のURLをGitHubの場所に置き換えてください -->
                     <img src="https://placehold.co/400x200/40C0C0/FFFFFF?text=Viscuit" alt="ビスケット" class="card-image rounded-t-lg">
                     <div class="p-6 flex-grow flex flex-col justify-between">
                         <div>
@@ -218,24 +159,24 @@
             const container = document.getElementById('remix-child-container');
             const parentCard = document.getElementById('remix-parent-card');
             
-            // トグル処理
+            // 要素が存在しない場合は何もしない
+            if (!container || !parentCard) return;
+
+            // 子カードが非表示の状態（display: none）から表示状態（grid）へ
             if (container.style.display === 'grid') {
+                // 閉じる処理
                 container.style.display = 'none';
-                // 展開時のクラスを削除（col-span-1は不要なため、ここでは削除）
-                parentCard.classList.remove('h-auto', 'md:col-span-3'); 
+                // 展開時のクラスを削除し、デフォルトの1列占有に戻る
+                parentCard.classList.remove('expanded-card', 'md:col-span-3');
+                parentCard.classList.add('md:col-span-1');
             } else {
+                // 開く処理
+                // デフォルトの1列占有を削除し、展開時の3列占有を設定
+                parentCard.classList.remove('md:col-span-1');
+                parentCard.classList.add('expanded-card', 'md:col-span-3');
                 container.style.display = 'grid';
-                // 展開時に幅を広げる
-                parentCard.classList.add('h-auto', 'md:col-span-3'); 
             }
         }
-
-        // 初期ロード時にScratch Remix Parent Cardが他のカードと同じ幅になるように調整
-        document.addEventListener('DOMContentLoaded', () => {
-            const parentCard = document.getElementById('remix-parent-card');
-            // 初期状態では子カードは非表示のため、通常のカードと同じスタイルを維持
-            // 既存のグリッド設定で自動的に1列分になる
-        });
     </script>
 </body>
 </html>
